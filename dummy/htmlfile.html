@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plant Disease Remedy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #2E7D32;
+            --primary-light: #4CAF50;
+            --accent-color: #FF6D00;
+            --accent-light: #FFB74D;
+            --background-color: #E8F5E9;
+            --card-color: rgba(255, 255, 255, 0.9);
+            --text-color: #1E3A1E;
+            --secondary-text: #3E5E3E;
+            --success-color: #00C853;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #E8F5E9 0%, #C8E6C9 50%, #B9F6CA 100%);
+            color: var(--text-color);
+            min-height: 100vh;
+            padding: 2rem 1rem;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%239ABF9A' fill-opacity='0.2'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            z-index: -1;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 850px;
+            margin: 0 auto;
+            opacity: 0;
+            animation: fadeIn 1s ease forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 2.5rem;
+            position: relative;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%234CAF50' d='M50,2.5c0,0-45,35-45,65c0,24.9,20.1,30,45,30s45-5.1,45-30C95,37.5,50,2.5,50,2.5z'/%3E%3Cpath fill='%23388E3C' d='M50,2.5c0,0-10,40-10,65c0,22.1,4.5,30,10,30s10-7.9,10-30C60,42.5,50,2.5,50,2.5z'/%3E%3C/svg%3E") no-repeat center center;
+            background-size: contain;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            opacity: 0.5;
+            z-index: -1;
+        }
+
+        .header h1 {
+            font-weight: 700;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            margin-bottom: 0.5rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .header p {
+            color: var(--secondary-text);
+            font-size: 1.1rem;
+            max-width: 600px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+
+        .result-card {
+            background: var(--card-color);
+            border-radius: 20px;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.05);
+            backdrop-filter: blur(15px);
+            padding: 3rem;
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.7);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s ease;
+        }
+
+        .result-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.12), 0 15px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        .result-card::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 150px;
+            height: 150px;
+            background: linear-gradient(135deg, var(--accent-light) 0%, var(--accent-color) 100%);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .result-card::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-color) 100%);
+            border-radius: 50%;
+            opacity: 0.2;
+        }
+
+        .disease-detection {
+            position: relative;
+            z-index: 1;
+        }
+
+        .disease-name {
+            display: inline-block;
+            background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-light) 100%);
+            color: white;
+            padding: 0.6rem 1.8rem;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.3rem;
+            margin-bottom: 1.8rem;
+            box-shadow: 0 4px 15px rgba(46, 125, 50, 0.3);
+            animation: pulse 2s infinite ease-in-out;
+        }
+
+        .disease-icon {
+            width: 32px;
+            height: 32px;
+            margin-right: 8px;
+            vertical-align: middle;
+        }
+
+        .remedies-section h2 {
+            font-size: 1.6rem;
+            margin-bottom: 2rem;
+            position: relative;
+            padding-bottom: 0.8rem;
+            color: var(--primary-color);
+        }
+
+        .remedies-section h2:after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--primary-color) 0%, var(--accent-color) 100%);
+            border-radius: 2px;
+        }
+
+        .remedies-list {
+            list-style: none;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 1.5rem;
+        }
+
+        .remedy-item {
+            background: rgba(255, 255, 255, 0.7);
+            border-radius: 12px;
+            padding: 1.2rem;
+            display: flex;
+            align-items: flex-start;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .remedy-item:hover {
+            transform: translateY(-5px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            background: rgba(255, 255, 255, 0.9);
+        }
+
+        .remedy-icon {
+            background: linear-gradient(135deg, var(--accent-color) 0%, var(--accent-light) 100%);
+            color: white;
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 1rem;
+            margin-top: 0.2rem;
+            font-weight: 600;
+            box-shadow: 0 4px 10px rgba(255, 109, 0, 0.2);
+        }
+
+        .remedy-content {
+            flex: 1;
+        }
+
+        .remedy-title {
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--primary-color);
+            font-size: 1.1rem;
+        }
+
+        .remedy-desc {
+            color: var(--secondary-text);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .success-badge {
+            display: inline-flex;
+            align-items: center;
+            background: linear-gradient(135deg, var(--success-color) 0%, #69F0AE 100%);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            margin-top: 2rem;
+            box-shadow: 0 4px 15px rgba(0, 200, 83, 0.3);
+        }
+
+        .success-badge svg {
+            margin-right: 8px;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 3rem;
+            color: var(--secondary-text);
+            font-size: 0.9rem;
+            position: relative;
+            padding: 1rem;
+        }
+
+        .footer::before {
+            content: '';
+            position: absolute;
+            top: -20px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary-color), transparent);
+        }
+
+        .footer a {
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .leaf-icon {
+            position: absolute;
+            width: 40px;
+            height: 40px;
+            opacity: 0.2;
+            z-index: -1;
+        }
+
+        .leaf-1 {
+            top: 10%;
+            left: 5%;
+            animation: float 6s infinite ease-in-out;
+        }
+
+        .leaf-2 {
+            top: 20%;
+            right: 10%;
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .leaf-3 {
+            bottom: 15%;
+            left: 8%;
+            animation: float 7s infinite ease-in-out;
+        }
+
+        .leaf-4 {
+            bottom: 10%;
+            right: 5%;
+            animation: float 9s infinite ease-in-out;
+        }
+
+        @media (max-width: 768px) {
+            .remedies-list {
+                grid-template-columns: 1fr;
+            }
+            
+            .result-card {
+                padding: 2rem;
+            }
+            
+            .header h1 {
+                font-size: 2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 1rem;
+            }
+            
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .disease-name {
+                font-size: 1.1rem;
+            }
+            
+            .remedies-section h2 {
+                font-size: 1.4rem;
+            }
+            
+            .result-card {
+                padding: 1.5rem;
+            }
+            
+            .remedy-item {
+                padding: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative Elements -->
+    <div class="leaf-icon leaf-1">
+        <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    </div>
+    <div class="leaf-icon leaf-2">
+        <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    </div>
+    <div class="leaf-icon leaf-3">
+        <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    </div>
+    <div class="leaf-icon leaf-4">
+        <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M17,8C8,10 5.9,16.17 3.82,21.34L5.71,22L6.66,19.7C7.14,19.87 7.64,20 8,20C19,20 22,3 22,3C21,5 14,5.25 9,6.25C4,7.25 2,11.5 2,13.5C2,15.5 3.75,17.25 3.75,17.25C7,8 17,8 17,8Z"/></svg>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Plant Disease Remedy</h1>
+            <p>Natural solutions for healthier, thriving plants</p>
+        </div>
+        
+        <div class="result-card">
+            <div class="disease-detection">
+                <span class="disease-name">
+                    <svg class="disease-icon" viewBox="0 0 24 24" fill="#FFFFFF">
+                        <path d="M19,18C20.56,18 21.15,19.55 21.15,19.55C21.18,19.62 21.2,19.68 21.21,19.75C21.34,20.36 20.95,21 20.33,21H3.67C3.05,21 2.66,20.36 2.79,19.75C2.8,19.68 2.82,19.62 2.85,19.55C2.85,19.55 3.44,18 5,18C6.56,18 7.15,19.55 7.15,19.55C7.18,19.62 7.2,19.68 7.21,19.75C7.34,20.36 6.95,21 6.33,21H5.67C5.05,21 4.66,20.36 4.79,19.75C4.8,19.68 4.82,19.62 4.85,19.55C4.85,19.55 5.44,18 7,18C8.56,18 9.15,19.55 9.15,19.55C9.18,19.62 9.2,19.68 9.21,19.75C9.34,20.36 8.95,21 8.33,21H7.67C7.05,21 6.66,20.36 6.79,19.75C6.8,19.68 6.82,19.62 6.85,19.55C6.85,19.55 7.44,18 9,18C10.56,18 11.15,19.55 11.15,19.55C11.19,19.62 11.2,19.68 11.21,19.75C11.34,20.36 10.95,21 10.33,21H9.67C9.05,21 8.66,20.36 8.79,19.75C8.8,19.68 8.82,19.62 8.85,19.55C8.85,19.55 9.44,18 11,18C12.56,18 13.15,19.55 13.15,19.55C13.18,19.62 13.2,19.68 13.21,19.75C13.34,20.36 12.95,21 12.33,21H11.67C11.05,21 10.66,20.36 10.79,19.75C10.8,19.68 10.82,19.62 10.85,19.55C10.85,19.55 11.44,18 13,18C14.56,18 15.15,19.55 15.15,19.55C15.18,19.62 15.2,19.68 15.21,19.75C15.34,20.36 14.95,21 14.33,21H13.67C13.05,21 12.66,20.36 12.79,19.75C12.8,19.68 12.82,19.62 12.85,19.55C12.85,19.55 13.44,18 15,18C16.56,18 17.15,19.55 17.15,19.55C17.18,19.62 17.2,19.68 17.21,19.75C17.34,20.36 16.95,21 16.33,21H15.67C15.05,21 14.66,20.36 14.79,19.75C14.8,19.68 14.82,19.62 14.85,19.55C14.85,19.55 15.44,18 17,18M13.86,1.5L16.92,4.57L15.15,6.35L16.5,7.7L19.18,5.03L22.5,8.34L21.14,9.71L19.85,8.43L17.18,11.1L15.82,9.74L14.05,11.5L14.44,14.25L11.75,14.95L10.87,16.57L9.05,15.82L7.23,18.3L5.88,17.25L6.63,13.27L5.28,11.9L8.03,7.47L10.5,9.94L12.97,7.47L13.86,1.5Z"/>
+                    </svg>
+                    Powdery Mildew
+                </span>
+                
+                <div class="remedies-section">
+                    <h2>Recommended Natural Remedies</h2>
+                    <ul class="remedies-list">
+                        <li class="remedy-item">
+                            <div class="remedy-icon">1</div>
+                            <div class="remedy-content">
+                                <div class="remedy-title">Baking Soda Spray</div>
+                                <div class="remedy-desc">Mix 1 teaspoon of baking soda with water and spray on affected areas weekly to neutralize the fungal environment.</div>
+                            </div>
+                        </li>
+                        <li class="remedy-item">
+                            <div class="remedy-icon">2</div>
+                            <div class="remedy-content">
+                                <div class="remedy-title">Neem Oil Application</div>
+                                <div class="remedy-desc">Apply diluted neem oil to affected areas to inhibit fungal growth and prevent spread while being gentle on plants.</div>
+                            </div>
+                        </li>
+                        <li class="remedy-item">
+                            <div class="remedy-icon">3</div>
+                            <div class="remedy-content">
+                                <div class="remedy-title">Milk Spray</div>
+                                <div class="remedy-desc">Create a solution with a 1:9 ratio of milk to water and spray on the affected plants. The proteins in milk have antifungal properties.</div>
+                            </div>
+                        </li>
+                        <li class="remedy-item">
+                            <div class="remedy-icon">4</div>
+                            <div class="remedy-content">
+                                <div class="remedy-title">Improve Air Circulation</div>
+                                <div class="remedy-desc">Ensure proper spacing between plants and prune when necessary to increase airflow and reduce humidity that fungi thrive in.</div>
+                            </div>
+                        </li>
+                        <li class="remedy-item">
+                            <div class="remedy-icon">5</div>
+                            <div class="remedy-content">
+                                <div class="remedy-title">Remove Affected Leaves</div>
+                                <div class="remedy-desc">Carefully trim and dispose of infected leaves to prevent the fungus from spreading to healthy parts of the plant.</div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div style="text-align: center; margin-top: 2rem;">
+                    <div class="success-badge">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                        </svg>
+                        Your plants will be thriving again soon!
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>© 2025 Plant Disease Remedy | Helping plants thrive naturally</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Plant Disease Detection</title>
+</head>
+<body>
+  <h2>Upload Plant Image</h2>
+
+  <input type="file" id="imageInput" accept="image/*" />
+  <br><br>
+  <img id="preview" src="#" alt="Image Preview" style="display: none; max-width: 300px;" />
+  <br><br>
+  <button onclick="uploadData()">Submit</button>
+
+  <p id="status"></p>
+  <p id="status" style="margin-top: 20px; font-size: 16px; font-weight: bold;"></p>
+
+
+  <script>
+    let imageFile;
+    let userLat = null;
+    let userLon = null;
+
+    // Image preview
+    document.getElementById("imageInput").addEventListener("change", function (e) {
+      imageFile = e.target.files[0];
+      const reader = new FileReader();
+      reader.onload = function (e) {
+        const preview = document.getElementById("preview");
+        preview.src = e.target.result;
+        preview.style.display = "block";
+      };
+      reader.readAsDataURL(imageFile);
+    });
+
+    // Get location
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        userLat = position.coords.latitude;
+        userLon = position.coords.longitude;
+      },
+      (error) => {
+        alert("Failed to get location: " + error.message);
+      }
+    );
+
+    // Upload image + location
+    async function uploadData() {
+  if (!imageFile || userLat === null || userLon === null) {
+    alert("Image or location not available!");
+    return;
+  }
+
+  const formData = new FormData();
+  formData.append("file", imageFile);
+  formData.append("lat", userLat);
+  formData.append("lon", userLon);
+
+  try {
+    const response = await fetch("http://127.0.0.1:8000/disease", { // fixed endpoint
+      method: "POST",
+      body: formData,
+    });
+
+    const result = await response.json();
+
+    // Show disease and remedy
+    document.getElementById("status").innerHTML = `
+      <strong>Disease:</strong> ${result.disease}<br>
+      <strong>Remedy:</strong> ${result.remedy}
+    `;
+  } catch (error) {
+    document.getElementById("status").innerText = "Error uploading data: " + error;
+  }
+}
+
+  </script>
+</body>
+</html>
