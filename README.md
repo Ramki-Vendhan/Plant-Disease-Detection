@@ -39,10 +39,13 @@ plant-disease-detection/
 1️⃣ Clone the repository
 git clone https://github.com/your-username/plant-disease-detection.git
 cd plant-disease-detection
+
 2️⃣ Install dependencies
 pip install -r requirements.txt
+
 3️⃣ Run the project
 uvicorn main:app --reload
+
 4️⃣ Open in browser
 http://127.0.0.1:8000
 
