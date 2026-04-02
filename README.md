@@ -38,6 +38,7 @@ plant-disease-detection/
 🚀 Getting Started
 1️⃣ Clone the repository
 git clone https://github.com/your-username/plant-disease-detection.git
+
 cd plant-disease-detection
 
 2️⃣ Install dependencies
