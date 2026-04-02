@@ -11,17 +11,20 @@ The Plant Disease Detection System helps farmers and agriculture enthusiasts ide
 📊 Displays disease name and details
 💊 Provides remedies and prevention tips
 🌐 Simple and user-friendly interface
+
 🛠️ Tech Stack
 Frontend: HTML, CSS, JavaScript
 Backend: FastAPI (Python)
 Machine Learning: TensorFlow / Keras
 Other Tools: OpenCV, Git, GitHub
+
 ⚙️ How It Works
 User uploads a plant leaf image
 Image is sent to the backend (FastAPI)
 ML model processes the image
 Disease is predicted
 Result with remedy is displayed
+
 📁 Project Structure
 plant-disease-detection/
 │
@@ -31,6 +34,7 @@ plant-disease-detection/
 ├── main.py           # Backend (FastAPI)
 ├── list_models.py    # Model handling
 ├── README.md
+
 🚀 Getting Started
 1️⃣ Clone the repository
 git clone https://github.com/your-username/plant-disease-detection.git
@@ -41,6 +45,7 @@ pip install -r requirements.txt
 uvicorn main:app --reload
 4️⃣ Open in browser
 http://127.0.0.1:8000
+
 🔮 Future Improvements
 📱 Mobile application support
 🌍 Multi-language support
